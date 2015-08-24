@@ -11,7 +11,7 @@ public class ProcessosController {
 		if(osName.contains("Windows"))
 			tarefa = "tasklist.exe";
 		else if(osName.contains("Linux"))
-			tarefa = "top";
+			tarefa = "ps -ef";
 		StringBuffer buffer = new StringBuffer();
 			try {
 				Process processo = Runtime.getRuntime().exec(tarefa);
@@ -46,21 +46,20 @@ public class ProcessosController {
 			}
 		}else{
 			if(osName.contains("Linux")){
-				buffer.append("kill ");
 				int pid = 0;
 				try{
 					pid = Integer.parseInt(id);
-					buffer.append("-9 ");
+					buffer.append("kill -9 ");
 					buffer.append(id);
 				}catch(NumberFormatException e){
-					buffer.append("-9 ");
+					buffer.append("killall -9 ");
 					buffer.append(id);
 				}
 			}
 		}
 		try{
 			Process processo = Runtime.getRuntime().exec(buffer.toString());
-			return "Comando executado com sucesso!";
+			return "Comando: " + buffer.toString() + " executado com sucesso!";
 		}catch(IOException e){
 			return e.getMessage();
 		}
